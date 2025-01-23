@@ -10,7 +10,7 @@ public class Mapa : MonoBehaviour
     public string map;
     private TMP_InputField inputField;
     public static Mapa instance;
-    private Button button;
+    private Button button, tutorial;
 
     void Awake()
     {
@@ -31,10 +31,16 @@ public class Mapa : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        if (scene.name == "Tutorial") return;
         button = GameObject.FindGameObjectWithTag("Button").GetComponent<Button>();
+        tutorial = GameObject.Find("Tutorial").GetComponent<Button>();
         if (button != null)
         {
             button.onClick.AddListener(ChangeScene);
+        }
+        if (tutorial != null)
+        {
+            tutorial.onClick.AddListener(GoToTutorial);
         }
     }
 
@@ -44,5 +50,10 @@ public class Mapa : MonoBehaviour
         map = inputField.text;
         Debug.Log(map);
         SceneManager.LoadScene("Template");
+    }
+
+    public void GoToTutorial()
+    {
+        SceneManager.LoadScene("Tutorial");
     }
 }
