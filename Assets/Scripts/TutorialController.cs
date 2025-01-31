@@ -31,8 +31,8 @@ Esta versão foi desenvolvida para a disciplina de Fundamentos Lógicos de Intelig
         back = GameObject.Find("Back").GetComponent<Button>();
         back.onClick.AddListener(ChangeText);
 
-        tutorialTexts[0] = "Pacman Mojificado é uma adaptação do clássico jogo Pac-Man, desenvolvido por Toru Iwatani para a empresa Namco.\n Esta versão foi desenvolvida para a disciplina de Fundamentos Lógicos de Inteligência Artificial (flia) da Universidade de Brasília (UnB).";
-        tutorialTexts[1] = "Em flia, os alunos da disciplina precisam modelar, utilizando a linguagem PDDL, o jogo Pacman Mojificado, de forma que seus códigos retornem a solução de cada um dos mapas.";
+        tutorialTexts[0] = "Pacman Mojificado é uma adaptação do clássico jogo Pac-Man, desenvolvido por Toru Iwatani para a empresa Namco.\n Esta versão foi desenvolvida para a disciplina de Fundamentos Lógicos de Inteligência Artificial (FLIA) da Universidade de Brasília (UnB).";
+        tutorialTexts[1] = "Em FLIA, os alunos da disciplina precisam modelar, utilizando a linguagem PDDL, o jogo Pacman Mojificado, de forma que seus códigos retornem a solução de cada um dos mapas.";
         tutorialTexts[2] = "Dessa forma, este jogo serve para os estudantes jogarem o jogo, mas também testar os planos gerados por seus códigos em PDDL";
         tutorialTexts[3] = "Como jogar?\n Para jogar Pacman Mojificado, primeiro você deve inserir (ou selecionar) um mapa de jogo, seguindo as regras de entrada para o jogo. Depois, com as teclas WASD ou com as setinhas, você pode movimentar o Pacman.\n Para vencer o jogo, o jogador deve matar todos os fantasmas!";
         tutorialTexts[4] = "O jogo possui uma pontuação, e, um objetivo secundário é atingir a menor pontuação possível!\n Cada fantasma possui um movimento único e padronizado: o Vermelho anda em sentido horário, o Verde faz o mesmo movimento do Pacman e o Azul faz o movimento contrário.";
