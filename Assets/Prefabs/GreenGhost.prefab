@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2327450183936283234}
   - component: {fileID: 3207851429184113217}
   - component: {fileID: 4863958778578419081}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GreenGhost
   m_TagString: GreenGhost
   m_Icon: {fileID: 0}

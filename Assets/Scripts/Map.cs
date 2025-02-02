@@ -75,15 +75,21 @@ public class Map : MonoBehaviour
         switch (character)
         {
             case '#': return 0;  // Associa o caractere 'A' ao primeiro prefab
+            case 'p':
             case 'P': return 1;
             case '*': return 2;
+            case 'r':
             case 'R': return 3;
+            case 'g':
             case 'G': return 4;
+            case 'b':
             case 'B': return 5;
             case '!': return 6;
             case '@': return 7;
             case '$': return 8;
+            case 'i':
             case 'I': return 9;
+            case 'o':
             case 'O': return 10;
             default: return -1;  // Retorna -1 se o caractere não tiver prefab associado
         }

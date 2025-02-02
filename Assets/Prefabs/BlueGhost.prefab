@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8687638555724102512}
   - component: {fileID: -7823420227846839319}
   - component: {fileID: -6776033793372464316}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BlueGhost
   m_TagString: BlueGhost
   m_Icon: {fileID: 0}

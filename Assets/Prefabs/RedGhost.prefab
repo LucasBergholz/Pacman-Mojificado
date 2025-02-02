@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5019021117240590129}
   - component: {fileID: -6266220469158217399}
   - component: {fileID: -1619422040432761470}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RedGhost
   m_TagString: RedGhost
   m_Icon: {fileID: 0}

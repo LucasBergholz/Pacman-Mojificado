@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6409450865503196164}
   - component: {fileID: 1755753218691451666}
   - component: {fileID: 5650632706833869375}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GreenFruit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -116,7 +116,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5006770778605366476}
   - component: {fileID: 631343110793560939}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GreenFruit
   m_TagString: Fruit
   m_Icon: {fileID: 0}

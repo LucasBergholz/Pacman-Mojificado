@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6953126632792995064}
   - component: {fileID: 4882988302425447117}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RedFruit
   m_TagString: Fruit
   m_Icon: {fileID: 0}
@@ -79,7 +79,7 @@ GameObject:
   - component: {fileID: 7362402956950123186}
   - component: {fileID: 2976345500533792242}
   - component: {fileID: 2457677694715626372}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RedFruit
   m_TagString: Untagged
   m_Icon: {fileID: 0}

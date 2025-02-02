@@ -8,11 +8,14 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     public float moveSpeed = 5f; // Velocidade de movimento do Pacman
-    private GameObject pacman, ghostRed, ghostGreen, ghostBlue, fruitRed, fruitGreen, fruitBlue;
+    public GameObject pacman, ghostRed, ghostGreen, ghostBlue, fruitRed, fruitGreen, fruitBlue;
     public GameObject[] portal;
     private int score = 0;
     public TMP_Text scoreText;
-    public Stack<int> movementStack = new Stack<int>();
+    public bool semaforo = false;
+    public bool gameOver = false;
+    public GameObject gameOverUI;
+    public TMP_Text gameOverText;
 
     void Start()
     {
@@ -44,7 +47,19 @@ public class GameController : MonoBehaviour
 
     void Update()
     {
-        if (pacman != null)
+        if (pacman == null)
+        {
+            gameOver = true;
+            gameOverUI.SetActive(true);
+            gameOverText.text = $"Gameover!";
+        }
+        if (ghostRed == null && ghostGreen == null && ghostBlue == null)
+        {
+            gameOver = true;
+            gameOverUI.SetActive(true);
+            gameOverText.text = $"Vitoria!\nScore = {score}";
+        }
+        if (pacman != null && !semaforo && !gameOver)
         {
             if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
             {
@@ -68,7 +83,7 @@ public class GameController : MonoBehaviour
     IEnumerator GhostsMovement(char direction)
     {
         yield return new WaitForSeconds(0.3f);
-        while (movementStack.Count > 0) yield return new WaitForSeconds(0.3f);
+        while (semaforo) yield return new WaitForSeconds(0.3f);
         // Fantasma Vermelho
         if (ghostRed != null)
         {
