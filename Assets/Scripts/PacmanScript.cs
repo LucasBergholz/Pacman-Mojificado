@@ -14,92 +14,97 @@ public class PacmanScript : MonoBehaviour
     private GameController gameController;
     private bool hasTeleported = false;
     private bool inIce = false;
+    private bool killedGhost = false;
     private char directionForIce;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
     }
-    public void Movement(char direction)
+
+    public void MakeTheMove(char direction)
     {
-        initialPosition = this.transform.position;
-        directionForIce = direction;
-        inIce = false;
-        if (direction == 'N')
+        killedGhost = false;
+        if (direction == 'N' || direction == 'n')
         {
             rb.MovePosition(this.transform.position + new Vector3(0, 1));
-        } else if (direction == 'S')
+        }
+        else if (direction == 'S' || direction == 's')
         {
             rb.MovePosition(this.transform.position + new Vector3(0, -1));
-        } else if (direction == 'E')
+        }
+        else if (direction == 'E' || direction == 'e')
         {
             rb.MovePosition(this.transform.position + new Vector3(1, 0));
-        } else if (direction == 'W')
+        }
+        else if (direction == 'W' || direction == 'w')
         {
             rb.MovePosition(this.transform.position + new Vector3(-1, 0));
         }
-
-        StartCoroutine(AddScore());
-        if (activeFruit != 'N') hasFruit = true;
+        if (hasFruit) gameController.AddScore(4);
+        else gameController.AddScore(2);
+    }
+    public void Movement(char direction)
+    {
+        //Debug.Log($"Parede: {isWall}");
+        //Debug.Log($"Gelo: {inIce}");
+        initialPosition = this.transform.position;
+        directionForIce = direction;
+        inIce = false;
+        isWall = false;
+        MakeTheMove(direction);
+        hasTeleported = false;
     }
 
-    IEnumerator AddScore()
+    public void AddScore()
     {
-        yield return new WaitForSeconds(0.1f);
-        if (isCoin) gameController.AddScore(1);
-        else if (isWall && activeFruit == 'N') gameController.AddScore(4);
+        if (killedGhost) return;
+        if (hasFruit) gameController.AddScore(-4);
+        else gameController.AddScore(-2);
+        if (isWall && activeFruit == 'N') gameController.AddScore(4);
         else if (isWall) gameController.AddScore(8);
         else if (hasFruit) gameController.AddScore(4);
+        else if (isCoin) gameController.AddScore(1);
         else gameController.AddScore(2);
 
         if (inIce && isWall && !hasFruit) gameController.AddScore(-4);
         else if (inIce && isWall && hasFruit) gameController.AddScore(-8);
 
-        isWall = false;
+        if(!inIce) isWall = false;
         isCoin = false;
     }
 
     public IEnumerator MovingInIce(char direction)
     {
+        //gameController.AddScore(2);
+        //if (hasFruit) gameController.AddScore(2);
         while (inIce) {
+            Debug.Log("Interacao");
             if (gameController.gameOver) yield break;
+            isWall = false;
+            MakeTheMove(direction);
+
+            yield return new WaitForSeconds(0.1f);
             if (isWall)
             {
+                this.transform.position = initialPosition;
                 if (direction == 'N') direction = 'S';
                 else if (direction == 'S') direction = 'N';
                 else if (direction == 'E') direction = 'W';
                 else if (direction == 'W') direction = 'E';
                 Debug.Log("Parede");
-                if (activeFruit == 'N') gameController.AddScore(-2);
-                else gameController.AddScore(-4);
-                isWall = false;
+                gameController.AddScore(2);
+                if (hasFruit) gameController.AddScore(2);
             }
-            if (direction == 'N')
-            {
-                rb.MovePosition(this.transform.position + new Vector3(0, 1));
-            }
-            else if (direction == 'S')
-            {
-                rb.MovePosition(this.transform.position + new Vector3(0, -1));
-            }
-            else if (direction == 'E')
-            {
-                rb.MovePosition(this.transform.position + new Vector3(1, 0));
-            }
-            else if (direction == 'W')
-            {
-                rb.MovePosition(this.transform.position + new Vector3(-1, 0));
-            }
-
             yield return new WaitForSeconds(0.1f);
             initialPosition = this.transform.position;
-            if (hasFruit) gameController.AddScore(4);
-            else gameController.AddScore(2);
             GameObject target = GameObject.FindGameObjectWithTag("BlockOfIce");
             Collider2D myCollider = GetComponent<Collider2D>();
             if (target != null && !myCollider.IsTouching(target.GetComponent<Collider2D>()))
             {
+                Debug.Log($"Parei isWall: {isWall}");
                 gameController.semaforo = false;
+                inIce = false;
                 break;
             }
         }
@@ -128,13 +133,25 @@ public class PacmanScript : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.gameObject.CompareTag("BlockOfIce") && !isWall)
+        {
+            //Debug.Log("GELADO");
+            inIce = true;
+            gameController.semaforo = true;
+            StartCoroutine(MovingInIce(directionForIce));
+            return;
+        }
         if (collision.gameObject.CompareTag("Wall"))
         {
-            this.transform.position = initialPosition;
+            if (inIce) FindObjectOfType<PauseRendering>().PauseForSeconds(0.1f);
+            hasTeleported = true;
             isWall = true;
+            Debug.Log($"Wall e {isWall}");
+            if (!inIce) this.transform.position = initialPosition;
         }
         else if (collision.gameObject.CompareTag("Fruit"))
         {
+            hasFruit = true;
             StartCoroutine(CollidingWithFruit(collision));
         }
         else if (collision.gameObject.CompareTag("Coin"))
@@ -146,9 +163,7 @@ public class PacmanScript : MonoBehaviour
         {
             if (activeFruit == 'R')
             {
-                Destroy(collision.gameObject);
-                activeFruit = 'N';
-                this.GetComponent<SpriteRenderer>().color = Color.white;
+                killingGhost(collision);
             }
             else Destroy(this.gameObject);
         }
@@ -156,9 +171,7 @@ public class PacmanScript : MonoBehaviour
         {
             if (activeFruit == 'G')
             {
-                Destroy(collision.gameObject);
-                activeFruit = 'N';
-                this.GetComponent<SpriteRenderer>().color = Color.white;
+                killingGhost(collision);
             }
             else Destroy(this.gameObject);
         }
@@ -166,9 +179,7 @@ public class PacmanScript : MonoBehaviour
         {
             if (activeFruit == 'B')
             {
-                Destroy(collision.gameObject);
-                activeFruit = 'N';
-                this.GetComponent<SpriteRenderer>().color = Color.white;
+                killingGhost(collision);
             }
             else Destroy(this.gameObject);
         }
@@ -178,13 +189,17 @@ public class PacmanScript : MonoBehaviour
             else if (this.transform.position == gameController.portal[1].transform.position) rb.MovePosition(gameController.portal[0].transform.position);
             hasTeleported = true;
         }
-        else if (collision.gameObject.CompareTag("Portal") && hasTeleported) hasTeleported = false;
-        else if (collision.gameObject.CompareTag("BlockOfIce") && !isWall)
-        {
-            Debug.Log("BLOCO");
-            inIce = true;
-            gameController.semaforo = true;
-            StartCoroutine(MovingInIce(directionForIce));
-        }
+        //else if (collision.gameObject.CompareTag("Portal") && hasTeleported) hasTeleported = false;
+        //Debug.Log("Cheguei");
+        AddScore();
+    }
+
+    public void killingGhost(Collider2D collision)
+    {
+        Destroy(collision.gameObject);
+        activeFruit = 'N';
+        hasFruit = false;
+        this.GetComponent<SpriteRenderer>().color = Color.white;
+        killedGhost = true;
     }
 }

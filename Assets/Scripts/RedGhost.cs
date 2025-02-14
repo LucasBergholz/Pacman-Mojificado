@@ -1,4 +1,4 @@
-using System.Collections;
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -61,4 +61,71 @@ public class RedGhost : MonoBehaviour
             hitWall = true;
         }
     }
+}*/
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class RedGhost : MonoBehaviour
+{
+    private Rigidbody2D rb;
+    private char[] direction = { 'E', 'S', 'W', 'N' };
+    private char currentDirection;
+    private int indexDirection = 0;
+    private float moveDistance = 1f;
+    private float checkRadius = 0.2f; // Tamanho da detecção da colisão
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        currentDirection = direction[0];
+    }
+
+    public void Movement()
+    {
+        Vector3 moveVector = GetMoveVector(currentDirection);
+        Vector3 targetPosition = transform.position + moveVector * moveDistance;
+
+        // Verifica se a posição destino colidiria com uma parede
+        if (IsWallAtPosition(targetPosition))
+        {
+            ChangeDirection();
+            Movement(); // Tenta mover na nova direção
+        }
+        else
+        {
+            rb.MovePosition(targetPosition);
+        }
+    }
+
+    private Vector3 GetMoveVector(char dir)
+    {
+        switch (dir)
+        {
+            case 'N': return new Vector3(0, 1);
+            case 'S': return new Vector3(0, -1);
+            case 'E': return new Vector3(1, 0);
+            case 'W': return new Vector3(-1, 0);
+            default: return Vector3.zero;
+        }
+    }
+
+    private void ChangeDirection()
+    {
+        indexDirection = (indexDirection + 1) % direction.Length;
+        currentDirection = direction[indexDirection];
+    }
+
+    private bool IsWallAtPosition(Vector3 position)
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(position, checkRadius);
+        foreach (Collider2D collider in colliders)
+        {
+            if (collider.gameObject.CompareTag("Wall")) return true;
+        }
+        return false;
+    }
 }
+
+
+

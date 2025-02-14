@@ -40,7 +40,7 @@ public class DropdownScript : MonoBehaviour
         // Criando uma lista de opções de "MAPA 01" até "MAPA 20"
         List<string> opcoes = new List<string>();
         opcoes.Add("MAPAS");
-        for (int i = 1; i <= 20; i++)
+        for (int i = 0; i <= 19; i++)
         {
             opcoes.Add($"MAPA {i:D2}"); // Formata para sempre ter dois dígitos (ex: "MAPA 01")
         }

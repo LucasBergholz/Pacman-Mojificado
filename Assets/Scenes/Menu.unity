@@ -454,7 +454,7 @@ MonoBehaviour:
   m_ResetOnDeActivation: 1
   m_RestoreOriginalTextOnEscape: 1
   m_isRichTextEditingAllowed: 0
-  m_LineLimit: 30
+  m_LineLimit: 200
   m_InputValidator: {fileID: 0}
 --- !u!114 &277343938
 MonoBehaviour:
@@ -2340,7 +2340,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_ScrollSensitivity: 45
   m_Viewport: {fileID: 1824498836}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 724268467}

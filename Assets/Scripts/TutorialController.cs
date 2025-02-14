@@ -16,7 +16,7 @@ Esta versão foi desenvolvida para a disciplina de Fundamentos Lógicos de Intelig
 
     [SerializeField]
     private TMP_Text title, textField, page;
-    private string[] tutorialTexts = new string[10];
+    private string[] tutorialTexts = new string[11];
     private Button next, back, exit;
     private int index = 0;
     // Start is called before the first frame update
@@ -41,6 +41,8 @@ Esta versão foi desenvolvida para a disciplina de Fundamentos Lógicos de Intelig
         tutorialTexts[7] = "O último caso de movimento é chamado de \"Dummy Move\". O Dummy Move consiste no Pacman andar na direção de uma parede.\n\nCaso isso ocorra, os fantasmas andarão normalmente, conforme a direção do Dummy Move, e o custo do movimento será o dobro do custo que seria andar para uma célula normal.";
         tutorialTexts[8] = "As regras de entrada de um mapa são:\n # : Paredes do mapa;\r\n* : Pastilhas;\r\n (Espaço Vazio) : Célula vazia;\r\nI : Chão de gelo;\r\nO : Chão de portal;\r\nP : Pac-Man;";
         tutorialTexts[9] = "R : Fantasma Vermelho;\r\nG : Fantasma Verde;\r\nB : Fantasma Azul;\r\n! : Fruta Vermelha;\r\n@ : Fruta Verde;\r\n$ : Fruta Azul;";
+        tutorialTexts[10] = "O jogo conta com um mecanismo para executar movimentos em massa. Na parte debaixo da partida existe um campo para inserir eles, e, ao clicar no botão validate, o jogo simula os movimentos.\nAs regras para validar com sucesso são:\n1- Separe os movimentos com ponto e vírgula;\n2- Os movimentos são representados por N (north), S (south), W (west), E (east);";
+        //tutorialTexts[11] = "As regras para validar com sucesso são:\n1- Separe os movimentos com ponto e vírgula;\n2- Os movimentos são representados por N (north), S (south), W (west), E (east);";
         textField.text = tutorialTexts[0];
         title.text = "Sobre O Jogo";
         page.text = $"{index+1} de {tutorialTexts.Length}";
@@ -55,8 +57,9 @@ Esta versão foi desenvolvida para a disciplina de Fundamentos Lógicos de Intelig
         else return;
 
         //Check slide to change title
-        if (index >= 3) title.text = "Como Jogar";
-        else title.text = "Sobre O Jogo";
+        if (index < 3) title.text = "Sobre O Jogo";
+        else if (index >= 3 && index <= 9) title.text = "Como Jogar";
+        else title.text = "Validador";
 
         //Update main text and page
         textField.text = tutorialTexts[index];
